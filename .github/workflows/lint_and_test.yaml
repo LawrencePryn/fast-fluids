@@ -1,0 +1,45 @@
+name: Lint and test
+
+on: [push]
+
+jobs:
+  test_and_lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Poetry
+        uses: abatilo/actions-poetry@v2
+
+      - name: Create Poetry config file
+        run: |
+          poetry config virtualenvs.create true --local
+          poetry config virtualenvs.in-project true --local
+
+      - name: Create Poetry cache
+        uses: actions/cache@v3
+        with:
+          path: ./.venv
+          key: venv-${{ hashFiles('poetry.lock') }}
+
+      - name: Install dependencies
+        run: poetry install --sync
+
+      - name: Run Ruff
+        run: poetry run ruff check
+
+      - name: Run Mypy
+        run: poetry run mypy
+
+      - name: Run Black
+        run: poetry run black . --check --diff --color
+
+      - name: Run Pytest
+        run: poetry run pytest

@@ -1,0 +1,64 @@
+[tool.poetry]
+name = "fast-fluids"
+version = "0.1.0"
+description = "Experimental code for modelling fluids in a performant manner."
+authors = ["Lawrence Pryn <lawrencempryn@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+numpy = "^1.26.2"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.11.0"
+mypy = "^1.7.1"
+ruff = "^0.1.7"
+pytest = "^7.4.3"
+pytest-cov = "^4.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+files = "**/*.py"
+strict = true
+
+[tool.black]
+include = ".+\\.py"
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "COM812",
+    "ISC001",
+    "D203",
+    "D213",
+    "D104",
+]
+
+[tool.ruff.per-file-ignores]
+"__*__.py" = ["D100"]
+"test_*.py" = [
+    "D100",
+    "INP001",
+    "F401",
+    "D103",
+    ]
+
+[tool.pytest.ini_options]
+addopts = "--cov fast_fluids"
+
+[tool.coverage.run]
+omit = ["__main__.py"]
+
+[tool.coverage.report]
+skip_empty = true
+show_missing = true
+exclude_also = [
+  "@(abc\\.)?abstractmethod",
+]
