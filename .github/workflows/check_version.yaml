@@ -1,0 +1,24 @@
+name: Check version
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  check_version:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: pyproject.toml
+          sparse-checkout-cone-mode: false
+
+      - name: Install Poetry
+        uses: abatilo/actions-poetry@v2
+
+      - name: Save project versions
+        run: |
+          PR_VERSION=$(poetry version --short)
+          echo "PR_VERSION=$PR_VERSION" >> $GITHUB_ENV
