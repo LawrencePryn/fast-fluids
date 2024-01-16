@@ -2,7 +2,7 @@ name: Check version
 
 on:
   pull_request:
-    branches: [main]
+    branches: [origin/feat-add-version-check]
 
 jobs:
   check_version:
