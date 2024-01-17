@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fast-fluids"
-version = "0.1.0"
+version = "0.1.1"
 description = "Experimental code for modelling fluids in a performant manner."
 authors = ["Lawrence Pryn <lawrencempryn@gmail.com>"]
 license = "MIT"

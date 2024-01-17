@@ -1,0 +1,43 @@
+name: Check version
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  check_version:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Install Poetry
+        uses: abatilo/actions-poetry@v2
+
+      - name: Check out target
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: .target
+          sparse-checkout: pyproject.toml
+          sparse-checkout-cone-mode: false
+
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          path: .source
+          sparse-checkout: pyproject.toml
+          sparse-checkout-cone-mode: false
+
+      - name: Determine versions
+        id: versions
+        run: |
+          TARGET=$(poetry version --short --directory=.target)
+          SOURCE=$(poetry version --short --directory=.source)
+          echo "target=$TARGET" >> $GITHUB_OUTPUT
+          echo "source=$SOURCE" >> $GITHUB_OUTPUT
+
+      - name: Check project version
+        uses: nick-fields/assert-action@v1
+        with:
+          expected: ${{ steps.versions.outputs.target }}
+          actual: ${{ steps.versions.outputs.source }}
+          comparison: notEqual
