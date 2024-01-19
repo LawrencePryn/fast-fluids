@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fast-fluids"
-version = "0.1.2"
+version = "0.1.3"
 description = "Experimental code for modelling fluids in a performant manner."
 authors = ["Lawrence Pryn <lawrencempryn@gmail.com>"]
 license = "MIT"
@@ -48,7 +48,10 @@ ignore = [
     "INP001",
     "F401",
     "D103",
-    ]
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
 
 [tool.pytest.ini_options]
 addopts = "--cov fast_fluids"
